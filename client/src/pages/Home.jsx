@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import QRCode from 'react-qr-code';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
 import OwlCarousel from 'react-owl-carousel';
@@ -7,9 +8,20 @@ import NavBar from '../components/navbar/NavBar';
 import DonateNow from '../components/donate/DonateNow';
 import Footer from '../components/navbar/Footer';
 export default function Home() {
+  const [showDonationModal, setShowDonationModal] = useState(false);
+  const [orpDonationId, setOrpDonationId] = useState('');
+  const [DonationAmount, setDonationAmount] = useState(0);
+  const [upi, setUpi] = useState('');
+  const [showQrModal, setShowQrModal] = useState(false);
+  console.log(DonationAmount, orpDonationId, upi);
+
+  const handleDonation = (id) => {
+    setOrpDonationId(id);
+    setShowDonationModal(true);
+  }
   const [collection, setCollection] = useState({})
   console.log(collection);
-  
+
   const options = {
     loop: true,
     margin: 10,
@@ -97,8 +109,8 @@ export default function Home() {
                 <div className="carousel-text">
                   <h1>Bridging generosity with those in need</h1>
                   <p>
-                  Nourish Hope – Empowering Communities, One Meal at a Time
-                  A seamless platform connecting donors with orphanages for a brighter future.
+                    Nourish Hope – Empowering Communities, One Meal at a Time
+                    A seamless platform connecting donors with orphanages for a brighter future.
                   </p>
                   <div className="carousel-btn">
                     <a className="btn btn-custom" href="#donate-now">
@@ -233,13 +245,13 @@ export default function Home() {
                   </ul>
                   <div className="tab-content">
                     <div id="tab-content-1" className="container tab-pane active">
-                    At Nourish Hope, we believe that every orphan deserves a life of dignity, love, and opportunities. Our platform connects donors with orphanages, ensuring that food, financial aid, and essential resources reach those who need them the most.
+                      At Nourish Hope, we believe that every orphan deserves a life of dignity, love, and opportunities. Our platform connects donors with orphanages, ensuring that food, financial aid, and essential resources reach those who need them the most.
                     </div>
                     <div id="tab-content-2" className="container tab-pane fade">
-                    We partner with restaurants, businesses, and individuals to create a seamless donation experience, making giving back easier, transparent, and impactful. Through real-time tracking, secure transactions, and a user-friendly interface, we ensure that every contribution makes a difference.
+                      We partner with restaurants, businesses, and individuals to create a seamless donation experience, making giving back easier, transparent, and impactful. Through real-time tracking, secure transactions, and a user-friendly interface, we ensure that every contribution makes a difference.
                     </div>
                     <div id="tab-content-3" className="container tab-pane fade">
-                    Founded with a vision to empower orphanages and inspire generosity, Nourish Hope is more than just a platform—it’s a movement. Join us in transforming lives, one donation at a time.
+                      Founded with a vision to empower orphanages and inspire generosity, Nourish Hope is more than just a platform—it’s a movement. Join us in transforming lives, one donation at a time.
                     </div>
                   </div>
                 </div>
@@ -264,7 +276,7 @@ export default function Home() {
                   <div className="service-text">
                     {/* <h3>Healthy Food</h3> */}
                     <p>
-                    Direct & Impactful Giving – Every donation goes directly to verified orphanages, ensuring your generosity reaches those who truly need it.
+                      Direct & Impactful Giving – Every donation goes directly to verified orphanages, ensuring your generosity reaches those who truly need it.
                     </p>
                   </div>
                 </div>
@@ -277,7 +289,7 @@ export default function Home() {
                   <div className="service-text">
                     {/* <h3>Pure Water</h3> */}
                     <p>
-                    Seamless & Transparent Process – Our user-friendly platform allows you to donate effortlessly while tracking your contributions in real time.
+                      Seamless & Transparent Process – Our user-friendly platform allows you to donate effortlessly while tracking your contributions in real time.
                     </p>
                   </div>
                 </div>
@@ -290,7 +302,7 @@ export default function Home() {
                   <div className="service-text">
                     {/* <h3>Health Care</h3> */}
                     <p>
-                    Trusted Partnerships – We collaborate with reputable orphanages and businesses, guaranteeing reliability and accountability.
+                      Trusted Partnerships – We collaborate with reputable orphanages and businesses, guaranteeing reliability and accountability.
                     </p>
                   </div>
                 </div>
@@ -303,7 +315,7 @@ export default function Home() {
                   <div className="service-text">
                     {/* <h3>Primary Education</h3> */}
                     <p>
-                    Be a Part of Change – Your support doesn’t just provide essentials; it transforms lives, fostering a brighter future for orphans.
+                      Be a Part of Change – Your support doesn’t just provide essentials; it transforms lives, fostering a brighter future for orphans.
                     </p>
                   </div>
                 </div>
@@ -368,7 +380,7 @@ export default function Home() {
               </div>
               <div className="col-lg-3 col-md-6">
                 <div className="facts-item">
-                <i className="flaticon-home" />
+                  <i className="flaticon-home" />
                   <div className="facts-text">
                     <h3 className="facts-dollar" data-toggle="counter-up">
                       {collection.restaurants}
@@ -640,7 +652,7 @@ export default function Home() {
                         <a href="#">{data.orphanage_name}</a>
                       </h3>
                       <p>
-                       {data.address}
+                        {data.address}
                       </p>
                     </div>
                     <div className="blog-meta">
@@ -650,11 +662,169 @@ export default function Home() {
                         <i className="fa fa-envelope" />
                         <a href="">{data.email}</a>
                       </p>
-                     
+
+                    </div>
+                    <div className="blog-meta">
+                      <button className="btn btn-custom" onClick={() => { handleDonation(data._id), setUpi(data.upi) }}>Donate Money</button>
                     </div>
                   </div>
                 </div>
               ))}
+
+              {showDonationModal && (
+                // <div
+                //     className="modal show"
+                //     tabIndex="-1"
+                //     style={{
+                //         display: "block",
+                //         backgroundColor: "rgba(0, 0, 0, 0.5)",
+                //     }}
+                // >
+                //     <div className="modal-dialog">
+                //         <div className="modal-content">
+                //             <div className="modal-header">
+                //                 <h5 className="modal-title">Donate</h5>
+                //                 <button
+                //                     type="button"
+                //                     className="btn-close"
+                //                     onClick={() => setShowModal(false)}
+                //                 ><b>X</b></button>
+                //             </div>
+                //             <div className="modal-body text-center">
+
+                //                 <form onSubmit={processDonation}>
+                //                     <div className="form-group">
+                //                         <label htmlFor="donations">set quantity</label>
+                //                         <input
+                //                             type="text"
+                //                             className="form-control"
+                //                             id="donations"
+                //                             name="donations"
+                //                             // value={donations}
+                //                             onChange={(e) => { setAssignQuantity(e.target.value) }}
+                //                             required
+                //                         />
+                //                     </div>
+                //                     <button type='submit'>donate</button>
+                //                 </form>
+
+                //             </div>
+                //             <div className="modal-footer">
+                //                 <button
+                //                     type="button"
+                //                     className="btn btn-secondary"
+                //                     onClick={() => setShowModal(false)}
+                //                 >
+                //                     Close
+                //                 </button>
+                //             </div>
+                //         </div>
+                //     </div>
+                // </div>
+                <div
+                  className="modal show d-flex align-items-center justify-content-center"
+                  tabIndex="-1"
+                  style={{
+                    display: "block",
+                    backgroundColor: "rgba(0, 0, 0, 0.5)",
+                    position: "fixed",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    zIndex: 1050, // Ensures it appears above other content
+                  }}
+                >
+                  <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content" style={{ borderRadius: "10px", overflow: "hidden" }}>
+                      <div className="modal-header bg-primary text-white">
+                        <h5 className="modal-title">Donate Money</h5>
+                        <button
+                          type="button"
+                          className="btn-danger"
+                          onClick={() => setShowDonationModal(false)}
+                          style={{ color: "red", fontSize: "18px" }}
+                        >
+                          <b style={{ color: 'black' }}>X</b>
+                        </button>
+                      </div>
+
+                      <div className="modal-body text-center p-4">
+                        <form>
+                          <div className="form-group mb-3">
+                            <label htmlFor="donations" className="form-label fw-bold">Enter Amount</label>
+                            <input
+                              type="number"
+                              className="form-control"
+                              id="donations"
+                              name="donations"
+                              onChange={(e) => setDonationAmount(e.target.value)}
+                              required
+                              value={DonationAmount}
+                              min='0'
+                              style={{ padding: "10px", borderRadius: "5px", border: "1px solid #ccc" }}
+                            />
+                          </div>
+                          <button className="btn btn-success w-100" onClick={(e)=>{e.preventDefault(),setShowQrModal(true),setShowDonationModal(false)}}>Submit</button>
+                        </form>
+                      </div>
+
+
+                    </div>
+                  </div>
+                </div>
+
+              )}
+
+              {showQrModal && (
+                <div
+                  className="modal show"
+                  tabIndex="-1"
+                  style={{
+                    display: "block",
+                    backgroundColor: "rgba(0, 0, 0, 0.5)",
+                  }}
+                >
+                  <div className="modal-dialog">
+                    <div className="modal-content">
+                      <div className="modal-header">
+                        <h5 className="modal-title">Donate via UPI</h5>
+                        <button
+                          type="button"
+                          className="btn-close"
+                          onClick={() => setShowQrModal(false)}
+                        ></button>
+                      </div>
+                      <div className="modal-body text-center">
+                        {upi ? (
+                          <>
+                            <p>
+                              Scan the QR code below or use a UPI app to make your
+                              donation.
+                            </p>
+                            <QRCode value={upi} size={200} />
+                            <p className="mt-3">
+                              <strong>Amount:</strong> ₹{DonationAmount}
+                            </p>
+                          </>
+                        ) : (
+                          <p className="text-danger">No UPI ID available.</p>
+                        )}
+                      </div>
+                      <div className="modal-footer">
+                        <button
+                          type="button"
+                          className="btn btn-secondary"
+                          onClick={() => setShowQrModal(false)}
+                        >
+                          Close
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
 
 
             </div>

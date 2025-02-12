@@ -5,6 +5,7 @@ const orphanageSchema = new mongoose.Schema({
   orphanage_name: { type: String, require: true },
   email: { type: String, require: true },
   mobile: { type: String, require: true },
+  upi: { type: String},
   address: { type: String, require: true },
   orphanage_images: { type: [String], require: true },
 });

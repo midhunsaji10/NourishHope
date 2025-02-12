@@ -9,6 +9,7 @@ export default function AddOrphanage() {
         email: '',
         mobile: '',
         address: '',
+        upi:'',
         username: '',
         password: '',
         orphanage_images: null,
@@ -54,6 +55,10 @@ export default function AddOrphanage() {
         if (!formData.password) {
             newErrors.password = 'Password is required';
         } 
+        if (!formData.upi.trim()) {
+            newErrors.upi = 'Upi is required';
+          
+        }
         // else if (formData.password.length < 6) {
         //     newErrors.password = 'Password must be at least 6 characters';
         // }
@@ -74,6 +79,7 @@ export default function AddOrphanage() {
             formDataToSend.append('address', formData.address);
             formDataToSend.append('orphanage_images', formData.orphanage_images);
             formDataToSend.append('username', formData.username);
+            formDataToSend.append('upi', formData.upi);
             formDataToSend.append('password', formData.password);
             axios.post('http://localhost:5000/api/auth/orphanage', formDataToSend).then((res) => {
                 console.log(res);
@@ -189,6 +195,17 @@ export default function AddOrphanage() {
                                     onChange={handleChange}
                                 />
                                 {errors.mobile && <p className="help-block text-danger">{errors.mobile}</p>}
+                            </div>
+                            <div className="control-group" style={{ paddingTop: '10px' }}>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    name="upi"
+                                    placeholder="Upi"
+                                    value={formData.upi}
+                                    onChange={handleChange}
+                                />
+                                {errors.upi && <p className="help-block text-danger">{errors.upi}</p>}
                             </div>
 
                             <div className="control-group" style={{ paddingTop: '10px' }}>

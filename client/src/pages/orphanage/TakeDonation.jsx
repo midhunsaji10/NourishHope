@@ -14,6 +14,9 @@ export default function TakeDonation() {
     const [foodType, setFoodType] = useState('');
     const [requestId, setRequestId] = useState('');
     const [showModal, setShowModal] = useState(false);
+    const [type, setType] = useState('All');
+    console.log(donations);
+    
     const handleFoodType = (value) => {
         setFoodType(value);
     }
@@ -127,47 +130,59 @@ export default function TakeDonation() {
             {/* Single Post Start*/}
             <div className="event">
                 <div className="container">
+                    <div className="single single-content" style={{ display: 'flex', justifyContent: 'center', paddingTop: '0px' }}>
+                        <div class="single-tags" >
+                            <a onClick={()=>{setType('All')}}>All</a>
+                            <a onClick={()=>{setType('Non Veg')}}>Non Veg</a>
+                            <a onClick={()=>{setType('Veg')}}>Veg</a>
+
+                        </div>
+                    </div>
+
                     <div className="row">
-                        {donations.map((donation) => (
-                            <div className="col-lg-6">
-                                <div className="event-item">
+                        {!donations[0] ?
+                            <h1>No Donations</h1>
+                            :
+                            donations.filter((donation) => donation.food_type === type || type === 'All').map((donation) => (
+                                <div className="col-lg-6">
+                                    <div className="event-item">
 
-                                    <div className="event-content">
-                                        <div className="event-meta">
-                                            <p style={{ textWrap: 'auto' }}>
-                                                <i className="fa fa-user" />
-                                                {donation.user?.name}
-                                            </p>
-                                            <p style={{ textWrap: 'auto' }}>
-                                                <i className="fa fa-mobile-alt" />
-                                                {donation.user?.mobile}
-                                            </p>
-                                            <p style={{ textWrap: 'auto' }}>
-                                                <i className="far fa-envelope" />
-                                                {donation.user?.email}
-                                            </p>
+                                        <div className="event-content">
+                                            <div className="event-meta">
+                                                <p style={{ textWrap: 'auto' }}>
+                                                    <i className="fa fa-user" />
+                                                    {donation.user?.name}
+                                                </p>
+                                                <p style={{ textWrap: 'auto' }}>
+                                                    <i className="fa fa-mobile-alt" />
+                                                    {donation.user?.mobile}
+                                                </p>
+                                                <p style={{ textWrap: 'auto' }}>
+                                                    <i className="far fa-envelope" />
+                                                    {donation.user?.email}
+                                                </p>
 
-                                        </div>
-                                        <div className="event-text">
-                                            <h3>{donation.food_type}</h3>
-                                            <p>
-                                                Items Donated : {donation.quantity}
-                                            </p>
-                                            <p>
-                                                Status : {donation.status}
-                                            </p>
-                                            <p>
-                                                Date: {new Date(donation.submittedAt).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
-                                            </p>
+                                            </div>
+                                            <div className="event-text">
+                                                <h3>{donation.food_type}</h3>
+                                                <p>
+                                                    Items Donated : {donation.quantity}
+                                                </p>
+                                                <p>
+                                                    Status : {donation.status}
+                                                </p>
+                                                <p>
+                                                    Date: {new Date(donation.submittedAt).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
+                                                </p>
 
-                                            <a className="btn btn-custom btn-primary text-white" onClick={() => { handleAssign(donation._id), handleFoodType(donation.food_type), setDonatedQuantity(donation.quantity), handleDonation(donation._id) }}>
-                                                Take Donation
-                                            </a>
+                                                <a className="btn btn-custom btn-primary text-white" onClick={() => { handleAssign(donation._id), handleFoodType(donation.food_type), setDonatedQuantity(donation.quantity), handleDonation(donation._id) }}>
+                                                    Take Donation
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))
+                            ))
                         }
                     </div>
                 </div>
@@ -176,74 +191,7 @@ export default function TakeDonation() {
             {/* Single Post End*/}
             {/* Footer Start */}
             <div className="footer">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-lg-3 col-md-6">
-                            <div className="footer-contact">
-                                <h2>Our Head Office</h2>
-                                <p>
-                                    <i className="fa fa-map-marker-alt" />
-                                    123 Street, New York, USA
-                                </p>
-                                <p>
-                                    <i className="fa fa-phone-alt" />
-                                    +012 345 67890
-                                </p>
-                                <p>
-                                    <i className="fa fa-envelope" />
-                                    info@example.com
-                                </p>
-                                <div className="footer-social">
-                                    <a className="btn btn-custom" href="">
-                                        <i className="fab fa-twitter" />
-                                    </a>
-                                    <a className="btn btn-custom" href="">
-                                        <i className="fab fa-facebook-f" />
-                                    </a>
-                                    <a className="btn btn-custom" href="">
-                                        <i className="fab fa-youtube" />
-                                    </a>
-                                    <a className="btn btn-custom" href="">
-                                        <i className="fab fa-instagram" />
-                                    </a>
-                                    <a className="btn btn-custom" href="">
-                                        <i className="fab fa-linkedin-in" />
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="footer-link">
-                                <h2>Popular Links</h2>
-                                <a href="">About Us</a>
-                                <a href="">Contact Us</a>
-                                <a href="">Popular Causes</a>
-                                <a href="">Upcoming Events</a>
-                                <a href="">Latest Blog</a>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="footer-link">
-                                <h2>Useful Links</h2>
-                                <a href="">Terms of use</a>
-                                <a href="">Privacy policy</a>
-                                <a href="">Cookies</a>
-                                <a href="">Help</a>
-                                <a href="">FQAs</a>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="footer-newsletter">
-                                <h2>Newsletter</h2>
-                                <form>
-                                    <input className="form-control" placeholder="Email goes here" />
-                                    <button className="btn btn-custom">Submit</button>
-                                    <label>Don't worry, we don't spam!</label>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+              
 
 
                 {showModal && (
@@ -320,7 +268,7 @@ export default function TakeDonation() {
                                         onClick={() => setShowModal(false)}
                                         style={{ color: "red", fontSize: "18px" }}
                                     >
-                                        <b style={{color:'black'}}>X</b>
+                                        <b style={{ color: 'black' }}>X</b>
                                     </button>
                                 </div>
 
@@ -343,7 +291,7 @@ export default function TakeDonation() {
                                     </form>
                                 </div>
 
-                               
+
                             </div>
                         </div>
                     </div>

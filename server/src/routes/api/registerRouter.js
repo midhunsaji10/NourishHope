@@ -247,6 +247,7 @@ registerRouter.post('/orphanage', uploadImage.array('orphanage_images', 1), asyn
             orphanage_name: req.body.orphanage_name,
             mobile: req.body.mobile,
             email: req.body.email,
+            upi: req.body.upi,
             address: req.body.address,
             orphanage_images: req.files ? req.files.map((file) => file.path) : null,
         };
@@ -275,6 +276,119 @@ registerRouter.post('/orphanage', uploadImage.array('orphanage_images', 1), asyn
         });
     }
 });
+
+registerRouter.put('/update-orphanage/:id',async (req, res) => {
+        try {
+            const orphanageId = req.params.id;
+            const orphanage = await orphanageData.findOne({ login_id: orphanageId });
+            console.log(req.body);
+            console.log('hi');
+            if (!orphanage) {
+                return res.status(404).json({
+                    Success: false,
+                    Error: true,
+                    Message: 'Orphanage not found',
+                });
+            }
+
+            // Check if email is being updated and if it already exists
+            if (req.body.email && req.body.email !== orphanage.email) {
+                const emailExists = await loginData.findOne({ email: req.body.email });
+                if (emailExists) {
+                    return res.status(400).json({
+                        Success: false,
+                        Error: true,
+                        Message: 'Email already exists',
+                    });
+                }
+            }
+
+            // Check if mobile number is being updated and if it already exists
+            if (req.body.mobile && req.body.mobile !== orphanage.mobile) {
+                const mobileExists = await orphanageData.findOne({ mobile: req.body.mobile });
+                if (mobileExists) {
+                    return res.status(400).json({
+                        Success: false,
+                        Error: true,
+                        Message: 'Mobile number already exists',
+                    });
+                }
+            }
+            console.log('hi');
+
+            // Update orphanage details
+            const logData = {
+                username:req.body.username || orphanage.username,
+                password:req.body.password || orphanage.password,
+            }
+            const orpData = {
+                orphanage_name : req.body.orphanage_name || orphanage.orphanage_name,
+                mobile : req.body.mobile || orphanage.mobile,
+                email : req.body.email || orphanage.email,
+                upi : req.body.upi || orphanage.upi,
+                address : req.body.address || orphanage.address,
+            }
+            const updateOrp = await orphanageData.updateOne({login_id:orphanageId},{$set:orpData})
+            const updateLog = await loginData.updateOne({_id:orphanageId},{$set:logData})
+            // if (req.files && req.files.length > 0) {
+            //     orphanage.orphanage_images = req.files.map((file) => file.path);
+            // }
+console.log('orpData',orpData);
+console.log(updateOrp);
+
+            
+
+            return res.json({
+                Success: true,
+                Error: false,
+                data: orphanage,
+                Message: 'Orphanage details updated successfully',
+            });
+        } catch (error) {
+            return res.status(500).json({
+                Success: false,
+                Error: true,
+                Message: 'Something went wrong',
+            });
+        }
+    });
+
+registerRouter.get('/get-single-orphanage/:id', async (req, res) => {
+    try {
+        const result = await orphanageData.findOne({ login_id: req.params.id }).populate('login_id');
+        if (result) {
+            const data = {
+                orphanage_name: result.orphanage_name,
+                email: result.email,
+                mobile: result.mobile,
+                address: result.address,
+                upi: result.upi || '',
+                username: result.login_id.username,
+                password: result.login_id.password,
+
+            }
+            return res.status(200).json({
+                Success: true,
+                Error: false,
+                data: data,
+                Message: 'Data Found',
+            });
+        }
+        else {
+            return res.status(400).json({
+                Success: false,
+                Error: true,
+                Message: 'Data Not Found',
+            });
+        }
+    } catch (error) {
+        return res.status(500).json({
+            Success: false,
+            Error: true,
+            Message: 'Something went wrong',
+        });
+    }
+})
 
 registerRouter.get('/getorphanage', async (req, res) => {
     try {

@@ -20,12 +20,12 @@ export default function DonateNow() {
 
     const handleRestaurantChange = (e) => {
         const selectedRestaurant = e.target.value;
-        const filter = restaurantData.filter((item) => item._id === selectedRestaurant);       
+        const filter = restaurantData.filter((item) => item._id === selectedRestaurant);
         setRestaurant(selectedRestaurant);
         setUpiId(filter[0].upi || "");
     };
     const handleTypeChange = (e) => {
-        const selectedType = e.target.value;      
+        const selectedType = e.target.value;
         setFoodtype(selectedType);
     };
 
@@ -35,14 +35,14 @@ export default function DonateNow() {
             alert("Please select a restaurant and enter a valid donation amount.");
             return;
         }
-        setShowModal(true); 
+        setShowModal(true);
         const formData = {
-            login_id:localStorage.getItem("loginId"),
-            restaurant_id:restaurant,
-            food_type:food_type,
-            quantity:donations
+            login_id: localStorage.getItem("loginId"),
+            restaurant_id: restaurant,
+            food_type: food_type,
+            quantity: donations
         }
-        axios.post("http://localhost:5000/api/user/make_donation",formData).then((res) => {
+        axios.post("http://localhost:5000/api/user/make_donation", formData).then((res) => {
             console.log(res.data);
         })
     };
@@ -87,7 +87,7 @@ export default function DonateNow() {
                                     >
                                         <option value="">Select Restaurant</option>
                                         {restaurantData.map((restaurant) => (
-                                            <option style={{color:'black'}} value={restaurant._id}>{restaurant.restaurant_name}</option>
+                                            <option style={{ color: 'black' }} value={restaurant._id}>{restaurant.restaurant_name}</option>
                                         ))}
 
                                     </select>
@@ -100,9 +100,9 @@ export default function DonateNow() {
                                         onChange={handleTypeChange}
                                     >
                                         <option value="">Select Food Type</option>
-                                            <option style={{color:'black'}} value="Non Veg">Non veg</option>
-                                            <option style={{color:'black'}} value="Veg">Veg</option>
-                                        
+                                        <option style={{ color: 'black' }} value="Non Veg">Non veg</option>
+                                        <option style={{ color: 'black' }} value="Veg">Veg</option>
+
 
                                     </select>
 
@@ -114,14 +114,14 @@ export default function DonateNow() {
                                         className="form-control"
                                         placeholder="No of donations"
                                         value={donations}
-                                        
+
                                         onChange={(e) => {
                                             const value = e.target.value;
                                             if (value === '' || /^[1-9]\d*$/.test(value)) {
                                                 setDonations(value)
                                             }
                                         }}
-                                       
+
                                         required
                                     />
                                 </div>

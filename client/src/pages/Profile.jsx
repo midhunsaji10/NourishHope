@@ -96,7 +96,7 @@ export default function Profile() {
                                     <div class="team-social">
                                         <a href="" style={{ width: '80%', margin: '10px' }}>+91{profile?.mobile}</a>
                                         <a style={{ width: '80%', margin: '10px' }}>{role=='user'?profile?.login_id?.username:profile?.address}</a>
-                                        <a style={{ width: '40%', margin: '10px' }} href="">Edit</a>
+                                        <a style={{ width: '40%', margin: '10px' }} href={role=='orphanage'?'/update-orphanage':''}>Edit</a>
                                     </div>
                                 </div>
                             </div>
