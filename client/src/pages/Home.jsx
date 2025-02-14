@@ -7,13 +7,30 @@ import axios from 'axios'
 import NavBar from '../components/navbar/NavBar';
 import DonateNow from '../components/donate/DonateNow';
 import Footer from '../components/navbar/Footer';
+import { useNavigate } from 'react-router-dom';
 export default function Home() {
   const [showDonationModal, setShowDonationModal] = useState(false);
   const [orpDonationId, setOrpDonationId] = useState('');
   const [DonationAmount, setDonationAmount] = useState(0);
   const [upi, setUpi] = useState('');
   const [showQrModal, setShowQrModal] = useState(false);
+  const navigate = useNavigate();
+  const checkLogin = ()=>{
+    if(localStorage.getItem('loginId')===null){
+      navigate('/login');
+    }
+  }
   console.log(DonationAmount, orpDonationId, upi);
+  const saveDonation=()=>{
+    const data={
+      orphanage_id:orpDonationId,
+      amount:DonationAmount,
+      login_id : localStorage.getItem('loginId'),
+    }
+    axios.post('http://localhost:5000/api/user/add-donation',data).then((res) => {
+      console.log(res.data.data)
+    })
+  }
 
   const handleDonation = (id) => {
     setOrpDonationId(id);
@@ -112,12 +129,13 @@ export default function Home() {
                     Nourish Hope – Empowering Communities, One Meal at a Time
                     A seamless platform connecting donors with orphanages for a brighter future.
                   </p>
+                {role!='admin'?
                   <div className="carousel-btn">
-                    <a className="btn btn-custom" href="#donate-now">
-                      Donate Now
-                    </a>
+                  <a className="btn btn-custom" href="#donate-now">
+                    Donate Now
+                  </a>
 
-                  </div>
+                </div>:''}
                 </div>
               </div>
 
@@ -567,9 +585,8 @@ export default function Home() {
         {/* Donate Start */}
 
 
-
-
-        <DonateNow />
+        {role!='admin'?
+        <DonateNow />:null}
 
 
 
@@ -665,7 +682,7 @@ export default function Home() {
 
                     </div>
                     <div className="blog-meta">
-                      <button className="btn btn-custom" onClick={() => { handleDonation(data._id), setUpi(data.upi) }}>Donate Money</button>
+                      <button className="btn btn-custom" onClick={() => { handleDonation(data._id), setUpi(data.upi),checkLogin() }}>Donate Money</button>
                     </div>
                   </div>
                 </div>
@@ -765,7 +782,7 @@ export default function Home() {
                               style={{ padding: "10px", borderRadius: "5px", border: "1px solid #ccc" }}
                             />
                           </div>
-                          <button className="btn btn-success w-100" onClick={(e)=>{e.preventDefault(),setShowQrModal(true),setShowDonationModal(false)}}>Submit</button>
+                          <button className="btn btn-success w-100" onClick={(e)=>{e.preventDefault(),setShowQrModal(true),setShowDonationModal(false),saveDonation()}}>Submit</button>
                         </form>
                       </div>
 

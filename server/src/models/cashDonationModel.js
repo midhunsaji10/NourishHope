@@ -10,6 +10,6 @@ const cashDontionSchema = new mongoose.Schema({
   },
 });
 
-var orphanageData = mongoose.model('cashDontion_tb', cashDontionSchema);
+var cashDontionData = mongoose.model('cash_dontion_tb', cashDontionSchema);
 
-module.exports = orphanageData;
+module.exports = cashDontionData; 

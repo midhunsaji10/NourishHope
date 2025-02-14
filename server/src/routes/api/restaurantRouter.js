@@ -41,7 +41,7 @@ restaurantRouter.post('/submitfeedback', async (req, res) => {
     try {
         console.log(req.body);
 
-        const { feedbackText, userLoginId, restaurantId } = req.body;
+        const { feedbackText, userLoginId, restaurantId, rating } = req.body;
 
         if (!feedbackText || !userLoginId) {
             return res.status(400).json({
@@ -49,11 +49,13 @@ restaurantRouter.post('/submitfeedback', async (req, res) => {
                 message: 'Feedback text and userId are required',
             });
         }
+        const updateRest = await restaurantData.updateOne({_id:restaurantId},{$set:{rating:rating}})
 
         const feedback = new Feedback({
             feedbackText,
             userLoginId,
-            restaurantId
+            restaurantId,
+            rating
         });
 
         await feedback.save();

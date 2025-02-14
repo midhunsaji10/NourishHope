@@ -61,7 +61,7 @@ export default function Login() {
                     localStorage.setItem('role', response.data.role);
                     localStorage.setItem('username', response.data.username);
                     navigate('/')
-                })
+                })  
                 .catch(error => {
                     console.log(error);
                     toast.error(error.response.data.Message)

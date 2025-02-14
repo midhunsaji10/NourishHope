@@ -6,6 +6,7 @@ const { default: mongoose } = require('mongoose');
 const requestData = require('../../models/requestModel');
 const orphanageData = require('../../models/orphanageModel');
 const restaurantData = require('../../models/restaurantModel');
+const cashDontionData = require('../../models/cashDonationModel');
 const userRouter = express.Router();
 
 
@@ -372,6 +373,108 @@ userRouter.put('/take_donation/:id', async (req, res) => {
     });
   }
 });
+
+
+userRouter.post('/add-donation', async (req, res) => {
+    try {
+        const { login_id, orphanage_id, amount } = req.body;
+
+        if (!login_id || !orphanage_id || !amount) {
+            return res.status(400).json({ message: "All fields are required" });
+        }
+
+        const newDonation = new cashDontionData({
+            login_id,
+            orphanage_id,
+            amount 
+        });
+
+        await newDonation.save();
+        res.status(201).json({ message: "Donation added successfully", data: newDonation });
+
+    } catch (error) {
+        res.status(500).json({ message: "Internal server error", error });
+    }
+});
+
+// Get all donations for a specific orphanage
+userRouter.get('/orphanage/:orphanage_id', async (req, res) => {
+    try {
+        const { orphanage_id } = req.params;
+
+        const donations = await cashDontionData.find({ orphanage_id }).populate('login_id', 'name email');
+        
+        if (donations.length === 0) {
+            return res.status(200).json({ message: "No donations found", totalDonations: 0, totalAmount: "0", donations: [] });
+        }
+
+        // Calculate total amount donated
+        const totalDonations = donations.length;
+        const totalAmount = donations.reduce((sum, donation) => sum + parseFloat(donation.amount), 0).toFixed(2);
+
+        res.status(200).json({
+            totalDonations,
+            totalAmount,
+            donations
+        });
+
+    } catch (error) {
+        res.status(500).json({ message: "Internal server error", error });
+    }
+});
+
+userRouter.get('/user-donation/:id', async (req, res) => {
+  try {
+      const { id } = req.params;
+
+      const donations = await cashDontionData.find({ login_id:id }).populate('orphanage_id', 'orphanage_name email mobile');
+      
+      if (donations.length === 0) {
+          return res.status(200).json({ message: "No donations found", totalDonations: 0, totalAmount: "0", donations: [] });
+      }
+
+      // Calculate total amount donated
+      const totalDonations = donations.length;
+      const totalAmount = donations.reduce((sum, donation) => sum + parseFloat(donation.amount), 0).toFixed(2);
+
+      res.status(200).json({
+          totalDonations,
+          totalAmount,
+          donations
+      });
+
+  } catch (error) {
+      res.status(500).json({ message: "Internal server error", error });
+  }
+});
+
+userRouter.get('/user-food-donation/:id', async (req, res) => {
+  try {
+      const { id } = req.params;
+
+      const donations = await donationData.find({ login_id:id }).populate('orphanage_id', 'orphanage_name email mobile');
+      console.log(donations);
+      
+      if (donations.length === 0) {
+          return res.status(200).json({ message: "No donations found", totalDonations: 0, totalAmount: "0", donations: [] });
+      }
+
+      // Calculate total amount donated
+      const totalDonations = donations.length;
+      const totalQuantity = donations.reduce((sum, donation) => sum + parseFloat(donation.quantity), 0).toFixed(0);
+
+      res.status(200).json({
+          totalDonations,
+          totalQuantity,
+          donations
+      });
+
+  } catch (error) {
+      res.status(500).json({ message: "Internal server error", error });
+  }
+});
+
+
 
 
 

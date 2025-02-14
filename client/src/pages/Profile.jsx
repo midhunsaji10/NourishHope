@@ -2,16 +2,26 @@ import React, { useEffect, useState } from 'react'
 import NavBar from '../components/navbar/NavBar'
 import axios from 'axios'
 import Footer from '../components/navbar/Footer'
+import './profile.css'
 
 export default function Profile() {
     const [role, setRole] = useState(localStorage.getItem('role'))
     const [profile, setProfile] = useState({})
-    console.log(profile);
+    const [donation, setDonation] = useState()
+    const [food, setFood] = useState()
+    console.log(profile,donation,food);
     console.log(role);
 
     useEffect(() => {
         axios.get(`http://localhost:5000/api/auth/getProfile/${localStorage.getItem('loginId')}/${role}`).then((res) => {
             setProfile(res.data.data)
+        })
+        
+        axios.get(`http://localhost:5000/api/user/user-donation/${localStorage.getItem('loginId')}`).then((res) => {
+            setDonation(res.data)
+        })
+        axios.get(`http://localhost:5000/api/user/user-food-donation/${localStorage.getItem('loginId')}`).then((res) => {
+            setFood(res.data)
         })
     }, [role])
     return (
@@ -76,39 +86,99 @@ export default function Profile() {
             <div class="team">
                 <div class="container">
 
-                    <div class="row justify-content-center">
-                        <div class="col-lg-8 col-md-6">
-                            <div class="team-items">
-                                <div class="team-img">
-                                    {/* <img src="img/team-1.jpg" alt="Team Image"/> */}
-                                    <img
-                                        src={
-                                            role == 'restaurant'
-                                                ? profile?.restaurant_images?.[0] 
-                                                : role==='orphanage'? profile?.orphanage_images?.[0] : profile?.images?.[0] 
-                                        }
-                                        alt="Team Image"
-                                    />
-                                </div>
-                                <div class="team-text">
-                                    <h2>{role == 'user' ? profile?.name : profile?.restaurant_name}</h2>
-                                    <p>{profile?.email}</p>
-                                    <div class="team-social">
-                                        <a href="" style={{ width: '80%', margin: '10px' }}>+91{profile?.mobile}</a>
-                                        <a style={{ width: '80%', margin: '10px' }}>{role=='user'?profile?.login_id?.username:profile?.address}</a>
-                                        <a style={{ width: '40%', margin: '10px' }} href={role=='orphanage'?'/update-orphanage':''}>Edit</a>
+                    <div className="container d-flex justify-content-center">
+                        <div className="card-profile">
+                            <div className="top-container-profile">
+                                <img
+                                    src={
+                                        role == 'restaurant'
+                                            ? profile?.restaurant_images?.[0]
+                                            : role === 'orphanage' ? profile?.orphanage_images?.[0] : profile?.images?.[0]
+                                    }
+
+                                    className="profile-image-profile"
+                                    width={250}
+                                    height={250}
+                                />
+                                <div className="row" style={{ width: '100%' }}>
+                                    <div className="col-lg-8">
+                                        <div className="ml-3">
+                                            <h5 className="name-profile">{role == 'user' ? profile?.name?.toUpperCase() : profile?.restaurant_name?.toUpperCase()}</h5>
+                                            <p className="mail-profile" style={{ marginBottom: '0px' }}>{profile?.email}</p>
+                                            <p className="mail-profile" style={{ marginBottom: '0px' }}>+91{profile?.mobile}</p>
+                                            <p className="mail-profile">Username: {role == 'user' ? profile?.login_id?.username : profile?.address}</p>
+                                        </div>
+                                    </div>
+                                    <div className="col-lg-4" style={{ justifyContent: 'center', }}>
+                                        {role == 'orphanage' ?
+
+                                            <a className='btn btn-primary' style={{ width: '60%', margin: '30px 0px', float: 'right' }} href={role == 'orphanage' ? '/update-orphanage' : ''}>Edit</a>
+                                            : ''}
+
+
                                     </div>
                                 </div>
                             </div>
+                          {role=='user'?
+                          <>
+                          <div className="middle-container-profile d-flex  align-items-center mt-3 p-2">
+                          <div className="dollar-div-profile px-3">
+                              <div className="round-div-profile">
+                                  &#8377;
+                              </div>
+                          </div>
+                          <div className=" mr-2">
+                              <div className="col-lg-12">
+                                  <span className="current-balance-profile">Total Cash Donations</span>
+                                  <span className="amount-profile">
+                                      <span className="dollar-sign-profile">&nbsp;&nbsp;&nbsp; </span>{donation?.totalDonations}
+                                  </span>
+                              </div>
+                              <div className="col-lg-12">
+                                  <span className="current-balance-profile">Total Cash Donated</span>
+                                  <span className="amount-profile">
+                                      <span className="dollar-sign-profile">&nbsp;&nbsp;&nbsp; &#8377;</span>{donation?.totalAmount}
+                                  </span>
+                              </div>
+
+                          </div>
+                      </div>
+                      <div className="middle-container-profile d-flex  align-items-center mt-3 p-2">
+                          <div className="dollar-div-profile px-3">
+                              <div className="round-div-profile">
+                                  &#8377;
+                              </div>
+                          </div>
+                          <div className=" mr-2">
+                              <div className="col-lg-12">
+                                  <span className="current-balance-profile">Total Food Donated</span>
+                                  <span className="amount-profile">
+                                      <span className="dollar-sign-profile">&nbsp;&nbsp;&nbsp; </span>{food?.totalDonations}
+                                  </span>
+                              </div>
+                              <div className="col-lg-12">
+                                  <span className="current-balance-profile">Total Donated Food Quantity</span>
+                                  <span className="amount-profile">
+                                      <span className="dollar-sign-profile">&nbsp;&nbsp;&nbsp;</span>{food?.totalQuantity}
+                                  </span>
+                              </div>
+
+                          </div>
+                      </div>
+                      </>
+                      :''  
+                        }
+
+
                         </div>
-
-
                     </div>
+
+
                 </div>
             </div>
             {/* Single Post End*/}
             {/* Footer Start */}
-           <Footer/>
+            <Footer />
             {/* Footer End */}
             {/* Back to top button */}
             <a href="#" className="back-to-top">

@@ -5,19 +5,20 @@ const feedbackSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    
     userLoginId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'login_tb', 
+        ref: 'login_tb',
         required: true,
     },
     restaurantId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'restaurant_tb',  
+        ref: 'restaurant_tb',
         required: true,
     },
     submittedAt: {
         type: Date,
-        default: Date.now,   
+        default: Date.now,
     },
 });
 

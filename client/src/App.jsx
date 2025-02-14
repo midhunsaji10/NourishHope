@@ -16,6 +16,7 @@ import DonationHistory from './pages/user/DonationHistory'
 import TakeDonation from './pages/orphanage/TakeDonation'
 import UpdateOrphanage from './pages/orphanage/UpdateOrphanage'
 
+
 function App() {
  
 
@@ -42,6 +43,7 @@ function App() {
         <Route path="/view-donation-history" element={<DonationHistory/>} />  
         <Route path="/take-donation" element={<TakeDonation/>} />  
         <Route path="/update-orphanage" element={<UpdateOrphanage/>} />  
+      
         </Routes>
     </BrowserRouter>
    

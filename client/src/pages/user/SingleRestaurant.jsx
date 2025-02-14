@@ -4,7 +4,19 @@ import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import toast, { Toaster } from 'react-hot-toast';
 import QRCode from 'react-qr-code';
+import Footer from '../../components/navbar/Footer';
 export default function SingleRestaurant() {
+    const [rating, setRating] = useState(0);
+    const [hover, setHover] = useState(0);
+
+    const handleRatingClick = (value) => {
+        setRating(value);
+    };
+
+    const handleRatingHover = (value) => {
+        setHover(value);
+    };
+
     const { id } = useParams()
     const [donations, setDonations] = useState('');
     const [food_type, setfood_type] = useState('');
@@ -35,7 +47,7 @@ export default function SingleRestaurant() {
         } else {
             setFeedbackError("");
             const login_id = localStorage.getItem("login_id");
-            axios.post(`http://localhost:5000/api/rest/submitfeedback`, { feedbackText: feedback, userLoginId: localStorage.getItem("loginId"), restaurantId: id }).then(res => {
+            axios.post(`http://localhost:5000/api/rest/submitfeedback`, { feedbackText: feedback, userLoginId: localStorage.getItem("loginId"), restaurantId: id, rating: rating }).then(res => {
                 toast.success(res.data.message);
                 setFeedback("");
             }).catch((err) => {
@@ -53,7 +65,7 @@ export default function SingleRestaurant() {
             alert("Please select a restaurant and enter a valid donation amount.");
             return;
         }
-        if (!food_type ) {
+        if (!food_type) {
             alert("Please select a food type");
             return;
         }
@@ -61,7 +73,7 @@ export default function SingleRestaurant() {
         const formData = {
             login_id: localStorage.getItem("loginId"),
             restaurant_id: id,
-            food_type:food_type,
+            food_type: food_type,
             quantity: donations
         }
         axios.post("http://localhost:5000/api/user/make_donation", formData).then((res) => {
@@ -217,7 +229,7 @@ export default function SingleRestaurant() {
                                                     <select
                                                         className="form-control"
                                                         value={food_type}
-                                                        onChange={(e)=>{setfood_type(e.target.value)}}
+                                                        onChange={(e) => { setfood_type(e.target.value) }}
                                                     >
                                                         <option value="">Select Food Type</option>
                                                         <option style={{ color: 'black' }} value="Non Veg">Non veg</option>
@@ -252,9 +264,27 @@ export default function SingleRestaurant() {
                                         </div>
                                     </div>
                                     <div className="sidebar-widget">
-                                        <h2 className="widget-title">Add Feedback</h2>
+                                        <h2 className="widget-title">Add Feedback & Rating</h2>
                                         <div className="search-widget">
                                             <form onSubmit={handleFeedbackSubmit}>
+                                                <small>Rate now</small>
+                                                <div className="star-rating" style={{ marginBottom: "10px" }}>
+                                                    {[1, 2, 3, 4, 5].map((star) => (
+                                                        <span
+                                                            key={star}
+                                                            onClick={() => handleRatingClick(star)}
+                                                            onMouseEnter={() => handleRatingHover(star)}
+                                                            onMouseLeave={() => setHover(0)}
+                                                            style={{
+                                                                fontSize: "24px",
+                                                                cursor: "pointer",
+                                                                color: (hover || rating) >= star ? "gold" : "gray",
+                                                            }}
+                                                        >
+                                                            ★
+                                                        </span>
+                                                    ))}
+                                                </div>
                                                 {feedbackError && <small className="text-danger">{feedbackError}</small>}
                                                 <textarea className="form-control"
                                                     onChange={handleFeedbackChange}
@@ -264,7 +294,7 @@ export default function SingleRestaurant() {
                                                     type="submit"
                                                     defaultValue="Post Comment"
                                                     className=" btn-primary"
-                                                    value={"Post Feedback"}
+                                                    value={"Submit"}
                                                     style={{ marginTop: '10px' }}
                                                 />
                                             </form>
@@ -326,90 +356,7 @@ export default function SingleRestaurant() {
                 )}
                 {/* Single Post End*/}
                 {/* Footer Start */}
-                <div className="footer">
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-lg-3 col-md-6">
-                                <div className="footer-contact">
-                                    <h2>Our Head Office</h2>
-                                    <p>
-                                        <i className="fa fa-map-marker-alt" />
-                                        123 Street, New York, USA
-                                    </p>
-                                    <p>
-                                        <i className="fa fa-phone-alt" />
-                                        +012 345 67890
-                                    </p>
-                                    <p>
-                                        <i className="fa fa-envelope" />
-                                        info@example.com
-                                    </p>
-                                    <div className="footer-social">
-                                        <a className="btn btn-custom" href="">
-                                            <i className="fab fa-twitter" />
-                                        </a>
-                                        <a className="btn btn-custom" href="">
-                                            <i className="fab fa-facebook-f" />
-                                        </a>
-                                        <a className="btn btn-custom" href="">
-                                            <i className="fab fa-youtube" />
-                                        </a>
-                                        <a className="btn btn-custom" href="">
-                                            <i className="fab fa-instagram" />
-                                        </a>
-                                        <a className="btn btn-custom" href="">
-                                            <i className="fab fa-linkedin-in" />
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-3 col-md-6">
-                                <div className="footer-link">
-                                    <h2>Popular Links</h2>
-                                    <a href="">About Us</a>
-                                    <a href="">Contact Us</a>
-                                    <a href="">Popular Causes</a>
-                                    <a href="">Upcoming Events</a>
-                                    <a href="">Latest Blog</a>
-                                </div>
-                            </div>
-                            <div className="col-lg-3 col-md-6">
-                                <div className="footer-link">
-                                    <h2>Useful Links</h2>
-                                    <a href="">Terms of use</a>
-                                    <a href="">Privacy policy</a>
-                                    <a href="">Cookies</a>
-                                    <a href="">Help</a>
-                                    <a href="">FQAs</a>
-                                </div>
-                            </div>
-                            <div className="col-lg-3 col-md-6">
-                                <div className="footer-newsletter">
-                                    <h2>Newsletter</h2>
-                                    <form>
-                                        <input className="form-control" placeholder="Email goes here" />
-                                        <button className="btn btn-custom">Submit</button>
-                                        <label>Don't worry, we don't spam!</label>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="container copyright">
-                        <div className="row">
-                            <div className="col-md-6">
-                                <p>
-                                    © <a href="#">Your Site Name</a>, All Right Reserved.
-                                </p>
-                            </div>
-                            <div className="col-md-6">
-                                <p>
-                                    Designed By <a href="https://htmlcodex.com">HTML Codex</a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <Footer />
                 {/* Footer End */}
             </>
 
