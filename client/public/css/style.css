@@ -1044,10 +1044,10 @@ a:focus {
     right: -25px;
 }
 
-.facts .facts-text h3.facts-dollar::after {
+/* .facts .facts-text h3.facts-dollar::after {
     content: "\f155";
     right: -18px;
-}
+} */
 
 .facts .facts-text p {
     color: #ffffff;

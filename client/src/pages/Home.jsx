@@ -400,7 +400,7 @@ export default function Home() {
                 <div className="facts-item">
                   <i className="flaticon-home" />
                   <div className="facts-text">
-                    <h3 className="facts-dollar" data-toggle="counter-up">
+                    <h3 className="facts-plus" data-toggle="counter-up">
                       {collection.restaurants}
                     </h3>
                     <p>Restaurants</p>
@@ -411,7 +411,7 @@ export default function Home() {
                 <div className="facts-item">
                   <i className="flaticon-donation" />
                   <div className="facts-text">
-                    <h3 className="facts-dollar" data-toggle="counter-up">
+                    <h3 className="facts-plus" data-toggle="counter-up">
                       {collection.donation}
                     </h3>
                     <p>Donations</p>

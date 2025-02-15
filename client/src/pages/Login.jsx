@@ -96,11 +96,7 @@ export default function Login() {
                                 </div>
                                 <div className="donate-text">
                                     <p>
-                                        Lorem ipsum dolor sit amet elit. Phasellus nec pretium mi.
-                                        Curabitur facilisis ornare velit non. Aliquam metus tortor,
-                                        auctor id gravida, viverra quis sem. Curabitur non nisl nec nisi
-                                        maximus. Aenean convallis porttitor. Aliquam interdum at lacus
-                                        non blandit.
+                                    Become a part of our initiative, helping bridge the gap between surplus food and those in need. By signing up, you gain access to a seamless donation system that ensures transparency and efficiency in food and monetary contributions
                                     </p>
                                 </div>
                             </div>
