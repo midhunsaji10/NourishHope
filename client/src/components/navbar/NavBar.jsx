@@ -16,7 +16,7 @@ export default function NavBar() {
                 <div className="navbar navbar-expand-lg bg-dark navbar-dark">
                     <div className="container-fluid">
                         <a href="index.html" className="navbar-brand">
-                            Helpz
+                            Nourish Hope
                         </a>
                         <button
                             type="button"
@@ -60,7 +60,7 @@ export default function NavBar() {
                     <div className="navbar navbar-expand-lg bg-dark navbar-dark">
                         <div className="container-fluid">
                             <a href="/" className="navbar-brand">
-                                Helpz
+                            Nourish Hope
                             </a>
                             <button
                                 type="button"
@@ -127,7 +127,7 @@ export default function NavBar() {
                         <div className="navbar navbar-expand-lg bg-dark navbar-dark">
                             <div className="container-fluid">
                                 <a href="index.html" className="navbar-brand">
-                                    Helpz
+                                Nourish Hope
                                 </a>
                                 <button
                                     type="button"
@@ -145,7 +145,7 @@ export default function NavBar() {
                                         <a href="/" className="nav-item nav-link active">
                                             Home
                                         </a>
-                                        <div className="nav-item dropdown">
+                                        {/* <div className="nav-item dropdown">
                                         <a
                                             href="#"
                                             className="nav-link dropdown-toggle"
@@ -162,7 +162,7 @@ export default function NavBar() {
                                             </a>
 
                                         </div>
-                                    </div>
+                                    </div> */}
                                         <a href="/take-donation" className="nav-item nav-link active">
                                             Take Donation
                                         </a>
@@ -185,7 +185,7 @@ export default function NavBar() {
                             <div className="navbar navbar-expand-lg bg-dark navbar-dark">
                                 <div className="container-fluid">
                                     <a href="index.html" className="navbar-brand">
-                                        Helpz
+                                    Nourish Hope
                                     </a>
                                     <button
                                         type="button"
@@ -227,7 +227,7 @@ export default function NavBar() {
                             <div className="navbar navbar-expand-lg bg-dark navbar-dark">
                                 <div className="container-fluid">
                                     <a href="index.html" className="navbar-brand">
-                                        Helpz
+                                    Nourish Hope
                                     </a>
                                     <button
                                         type="button"
